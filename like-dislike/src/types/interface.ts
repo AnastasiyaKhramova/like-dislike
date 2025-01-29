@@ -12,14 +12,20 @@ export interface CommentModel {
     text?: string | null;
     isLike?: boolean | null;
     replies?: ReplyModel[];
+    like: LikeDislikeModel;
 }
 
 interface UserModel {
     username: string;
 }
 
-interface ReplyModel {
+export interface ReplyModel {
     id: string;
     text: string;
-    img?: string;
+    img?: string | null;
+}
+export interface LikeDislikeModel {
+    isLike: boolean | null;
+    likeCount: number;
+    onLikeDislike: (newLikeState: boolean) => void;
 }

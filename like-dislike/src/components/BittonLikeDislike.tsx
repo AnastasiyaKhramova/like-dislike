@@ -1,30 +1,34 @@
 import React, { useState } from 'react';
 import { AiFillLike, AiFillDislike } from 'react-icons/ai';
+import { LikeDislikeModel } from '../types/interface'
 
-
-const LikeDislikeWithIcons: React.FC = () => {
-    const [liked, setLiked] = useState<boolean | null>(null);
-    const [likeCount, setLikeCount] = useState<number>(0);
+const LikeDislikeWithIcons: React.FC<LikeDislikeModel> = ({ isLiked, likeCount, onLikeDislike }) => {
+    const [liked, setLiked] = useState<boolean | null>(isLiked);
 
     const handleLike = () => {
-        setLiked(true);
-        setLikeCount(prevCount => prevCount + 1);
-    }
+        if (liked !== true) {
+            setLiked(true);
+            onLikeDislike(true);
+        }
+    };
+
     const handleDislike = () => {
-        setLiked(false);
-        setLikeCount(prevCount => prevCount - 1);
-    }
+        if (liked !== false) {
+            setLiked(false);
+            onLikeDislike(false);
+        }
+    };
 
     return (
         <div>
             <button onClick={handleLike} style={{ color: liked === true ? 'green' : 'gray' }}>
                 <AiFillLike />
             </button>
-            <div>{likeCount}</div>
+            <span>{likeCount}</span>
             <button onClick={handleDislike} style={{ color: liked === false ? 'red' : 'gray' }}>
                 <AiFillDislike />
-            </button >
-        </div >
+            </button>
+        </div>
     );
 };
 
