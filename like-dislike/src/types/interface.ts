@@ -10,7 +10,6 @@ export interface CommentModel {
     user?: UserModel;
     userGuid?: string;
     text?: string | null;
-    isLike?: boolean | null;
     replies?: ReplyModel[];
     like: LikeDislikeModel;
 }
@@ -27,5 +26,4 @@ export interface ReplyModel {
 export interface LikeDislikeModel {
     isLike: boolean | null;
     likeCount: number;
-    onLikeDislike: (newLikeState: boolean) => void;
 }

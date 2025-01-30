@@ -10,30 +10,30 @@ export const commentsData: CommentModelDataResult = {
             user: { username: 'Анна Харитонова' },
             text: 'Какая милая!!!',
             createDT: '2025-01-20T12:00:00Z',
-            isLike: true,
             replies: [
                 {
                     id: uuidv4(),
                     text: 'Полностью согласна!',
                     img: commentPhoto
                 }
-            ]
+            ],
+            like: { isLike: true, likeCount: 0 }
         },
         {
             id: uuidv4(),
             user: { username: 'Иван Сердюков' },
             text: 'Не плохая, но можно еще постараться',
             createDT: '2025-01-21T15:30:00Z',
-            isLike: false,
-            replies: []
+            replies: [],
+            like: { isLike: true, likeCount: 0 }
         },
         {
             id: uuidv4(),
             user: { username: 'Мария Захарова' },
             text: 'Побольше бы таких картинок',
             createDT: '2025-01-24T00:30:00Z',
-            isLike: true,
-            replies: []
+            replies: [],
+            like: { isLike: true, likeCount: 0 }
         },
     ],
 };

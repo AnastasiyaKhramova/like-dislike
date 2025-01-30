@@ -1,0 +1,35 @@
+.comments-list {
+    padding: 16px;
+    background-color: #f9fafb;
+}
+
+.comments-list h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #d440e1;
+}
+
+.photo {
+    width: 200px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.comments {
+    list-style-type: none;
+    padding: 0;
+}
+
+.comment-item {
+    border: 1px solid #ddd;
+    padding: 16px;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.comment-item:hover {
+    transform: translateY(-5px);
+}

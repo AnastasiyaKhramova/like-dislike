@@ -6,10 +6,8 @@ import { CommentModel, ReplyModel } from '../types/interface.ts';
 import { commentsData } from '../data/comments.ts';
 import { v4 as uuidv4 } from 'uuid';
 import CommentReplies from './CommentReplies.tsx';
+import '../assets/style/CommentDetail.css'
 
-// interface CommentDetailProps {
-//     setComments: React.Dispatch<React.SetStateAction<CommentModel[]>>;
-// }
 const CommentDetail: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const [comment, setComment] = useState<CommentModel | null>(null);
@@ -18,8 +16,6 @@ const CommentDetail: React.FC = () => {
     const [image, setImage] = useState<File | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-    const [likeCount, setLikeCount] = useState<number>(0);
-    const [isLike, setIsLike] = useState<boolean | null>(null);
     const navigate = useNavigate();
 
     // Эмуляция загрузки данных по ID
@@ -33,27 +29,12 @@ const CommentDetail: React.FC = () => {
             if (foundComment) {
                 setComment(foundComment);
                 setComments(commentsList);
-                setLikeCount(foundComment.likeCount || 0);
-                setIsLike(foundComment.isLike || null);
             } else {
                 setError('Комментарий не найден');
             }
             setLoading(false);
         }, 1000);
     }, [id]);
-
-    // Сохранияем количество лайков и дизлайков
-    const handleLikeDislike = (newLikeState: boolean) =>
-    {
-        if (!comment) return;
-        const updatedComment = { ...comment, isLiked: newLikeState, likeCount: newLikeState ? likeCount + 1 : likeCount - 1 };
-        setComment(updatedComment);
-        setLikeCount(updatedComment.likeCount);
-        setIsLike(updatedComment.isLiked);
-        const savedComments = JSON.parse(localStorage.getItem('comments') || '[]');
-        const updatedComments = savedComments.map((c: CommentModel) => (c.id === id ? updatedComment : c));
-        localStorage.setItem('comments', JSON.stringify(updatedComments));
-    };
 
     // Сохранияем комментарии
     const handleCommentSubmit = (e: React.FormEvent) => {
@@ -72,15 +53,17 @@ const CommentDetail: React.FC = () => {
 
         setTimeout(() => {
                 // Обновляем локальное состояние комментариев
-            const updateComments = comments.map((c) => c.id === id ? { ...c, replies: [...c.replies, newReply] } : c);
-            setComments(updateComments);
-            localStorage.setItem('comments', JSON.stringify(updateComments));
-
-            // Обновляем глобальное состояние комментариев
-            const updateComment = updateComments.find(c => c.id === id);
-            if (updateComment) {
-                setComment(updateComment)
-            }
+            const updateComments = comments.map((c) =>
+                c.id === id
+                    ? { ...c, replies: [...c.replies, newReply], like: { likeCount: c.like.likeCount, isLike: c.like.isLike } } : c);
+                    localStorage.setItem('comments', JSON.stringify(updateComments));
+                    
+                    // Обновляем глобальное состояние комментариев
+                    const updateComment = updateComments.find(c => c.id === id);
+                    if (updateComment) {
+                        setComment(updateComment)
+                    }
+                    setComments(updateComments);
 
                 // очищаем поле ввода и картинку
                 setNewComment('');
@@ -96,20 +79,21 @@ const CommentDetail: React.FC = () => {
         <>
             <button onClick={() => navigate('/')} className="mb-4 bg-gray-300 p-2">Назад</button>
             {comment ? (
-                <div className="p-4">
+                <div className="comment-detail p-4">
                     <div className="font-bold">{comment.user?.username}</div>
                     <div>{DateTime.fromISO(comment.createDT).toRelative()}</div>
                     <div>{comment.text}</div>
                     <LikeDislikeWithIcons
-                        isLike = {isLike}
-                        likeCount = {likeCount}
-                        onLikeDislike = {handleLikeDislike} />
-                    <CommentReplies replies={comment.replies} />
+                        commentId={comment.id}
+                        initialLikeData={comment.like} />
+                    
+                    <CommentReplies replies={comment.replies || []} />
 
                     <h2>Добавить новый комментарий</h2>
                     <input
                         type="file"
                         onChange={(e) => e.target.files && setImage(e.target.files[0])}
+                        className="file-input"
                     />
                     <textarea
                         value={newComment}

@@ -1,0 +1,23 @@
+.like-dislike-buttons {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.like-button,
+.dislike-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.liked {
+    color: rgb(120, 220, 120);
+}
+
+.disliked {
+    color: rgb(231, 86, 86);
+}

@@ -6,6 +6,7 @@ import { commentsData } from '../data/comments.ts';
 import { CommentModel } from '../types/interface.ts'
 import photo from '../img/photo.webp'
 import CommentReplies from './CommentReplies.tsx';
+import '../assets/style/CommentsList.css'
 
 const CommentsList: React.FC = () => {
     const [comments, setComments] = useState<CommentModel[]>(commentsData.data || []);
@@ -23,8 +24,7 @@ const CommentsList: React.FC = () => {
                     savedComments = JSON.stringify(commentsData.data)
                     localStorage.setItem("comments", savedComments);
                 }
-                const parsedComments = JSON.parse(savedComments);
-                setComments(parsedComments);
+                setComments(JSON.parse(savedComments));
             } catch (e) {
                 setError('Отзывы не загружены');
             }
@@ -37,26 +37,20 @@ const CommentsList: React.FC = () => {
         navigate(`/comment/${id}`);
     };
 
-    const handleLikeDislike = (id: string, isLiked: boolean) => {
-        setComments(prevComments => prevComments.map(comment => comment.id === id ? { ...comment, isLiked, likeCount: isLiked ? comment.likeCount + 1 : comment.likeCount - 1 } : comment));
-        localStorage.setItem('comments', JSON.stringify(comments));
-    };
-
     if (loading) return <div>Загрузка отзывов...</div>;
     if (error) return <div>{error}</div>;
 
     return (
-        <div>
+        <div className="comments-list">
             <h1>Список отзывов</h1>
-            <img src={photo} alt="photo" style={{ width: 200 }} />
-            <ul>
+            <img src={photo} alt="photo" className="photo" />
+            <ul className="comments">
                 {comments.map((comment: CommentModel) => (
                     <li
-                        key={comment.id}
-                        className="border p-4 mb-4 cursor-pointer"
-                        style={{ listStyle: "none" }}
+                    key={comment.id}
+                    className="comment-item"
                     >
-
+                        <h2 >Отзыв</h2>
                         <div onClick={() => handleClickComment(comment.id)}>
                             <div className="font-bold">{comment.user?.username}</div>
                             <div className="text-gray-500 text-sm">{DateTime.fromISO(comment.createDT).toRelative()}</div>
@@ -64,9 +58,8 @@ const CommentsList: React.FC = () => {
                         </div>
                         <CommentReplies replies={comment.replies} />
                         <LikeDislikeWithIcons
-                            isLiked={comment.like.isLike}
-                            likeCount={comment.like.likeCount}
-                            onLikeDislike={(newLikeState) => handleLikeDislike(comment.id, newLikeState)} />
+                            commentId={comment.id}
+                            initialLikeData={comment.like} />
                     </li>
                 ))}
             </ul>

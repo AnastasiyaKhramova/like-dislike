@@ -1,0 +1,36 @@
+.comment-replies {
+  margin-top: 1.5rem;
+}
+
+.comment-replies h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.comment-replies ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.comment-replies li {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.comment-replies li:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.comment-replies p {
+  color: #333;
+}
+
+.comment-replies img {
+  margin-top: 0.5rem;
+  width: 200px;
+  border-radius: 0.5rem;
+}
