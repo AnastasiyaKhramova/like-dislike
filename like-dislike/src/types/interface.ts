@@ -10,7 +10,7 @@ export interface CommentModel {
     user?: UserModel;
     userGuid?: string;
     text?: string | null;
-    replies?: ReplyModel[];
+    replies: ReplyModel[];
     like: LikeDislikeModel;
 }
 

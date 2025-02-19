@@ -3,7 +3,7 @@ import { ReplyModel } from '../types/interface.ts'
 import '../assets/style/CommentReplies.css'
 
 interface CommentRepliesProps {
-    replies?: ReplyModel[];
+    replies: ReplyModel[];
 }
 
 const CommentReplies: React.FC<CommentRepliesProps> = ({ replies = []}) => {
